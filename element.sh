@@ -14,9 +14,10 @@ else
      echo "I could not find that element in the database."
     else
       NUM=$1
-      echo $NAME
       SYMBOL=$($PSQL "SELECT symbol FROM elements WHERE name='$NAME'" | xargs)
-      echo $SYMBOL
+      TYPE=$($PSQL "SELECT type FROM types RIGHT JOIN properties USING(type_id) WHERE atomic_number=$NUM")
+      
+
     fi
   fi
 
