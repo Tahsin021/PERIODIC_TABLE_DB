@@ -8,14 +8,22 @@ then
 else
   if [[ $1 =~ ^[0-9]+$ ]]
   then
-    NAME=$($PSQL "SELECT name FROM elements WHERE atomic_number=$1")
-    echo $NAME
+    NAME=$($PSQL "SELECT name FROM elements WHERE atomic_number=$1" | xargs)
+    if [[ -z $NAME ]]
+    then
+     echo "I could not find that element in the database."
+    else
+      NUM=$1
+      echo $NAME
+      SYMBOL=$($PSQL "SELECT symbol FROM elements WHERE name='$NAME'" | xargs)
+      echo $SYMBOL
+    fi
   fi
 
 
   if [[ $1 =~ ^[A-Z][a-z]?$ ]]
   then
-    NAME=$($PSQL "SELECT name FROM elements WHERE symbol=$1")
+    NAME=$($PSQL "SELECT name FROM elements WHERE symbol='$1'")
     echo $NAME
   fi
 
