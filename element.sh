@@ -16,8 +16,11 @@ else
       NUM=$1
       SYMBOL=$($PSQL "SELECT symbol FROM elements WHERE name='$NAME'" | xargs)
       TYPE=$($PSQL "SELECT type FROM types RIGHT JOIN properties USING(type_id) WHERE atomic_number=$NUM")
-      
+      MASS=$($PSQL "SELECT atomic_mass FROM properties WHERE atomic_number=$NUM")
+      MP=$($PSQL "SELECT melting_point_celsius FROM properties WHERE atomic_number=$NUM")
+      BP=$($PSQL "SELECT boiling_point_celsius FROM properties WHERE atomic_number=$NUM")
 
+      echo -e "\nThe element with atomic number $NUM is $NAME ($SYMBOL). It's a $TYPE, with a mass of $MASS amu. $NAME has a melting point of $MP celsius and a boiling point of $BP celsius."
     fi
   fi
 
