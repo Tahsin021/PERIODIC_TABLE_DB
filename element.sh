@@ -27,7 +27,7 @@ else
 
   if [[ $1 =~ ^[A-Z][a-z]?$ ]]
   then
-    NAME=$($PSQL "SELECT name FROM elements WHERE symbol='$1'")
+    NAME=$($PSQL "SELECT name FROM elements WHERE symbol='$1'" | xargs)
     if [[ -z $NAME ]]
     then
      echo "I could not find that element in the database."
@@ -52,7 +52,7 @@ else
       echo "I could not find that element in the database."
     else
       NAME=$1
-      MASS=$($PSQL "SELECT atomic_number FROM properties WHERE atomic_number='$NUM'" | xargs)
+      MASS=$($PSQL "SELECT atomic_mass FROM properties WHERE atomic_number='$NUM'" | xargs)
       TYPE=$($PSQL "SELECT type FROM types RIGHT JOIN properties USING(type_id) WHERE atomic_number=$NUM" | xargs)
       SYMBOL=$($PSQL "SELECT symbol FROM elements WHERE atomic_number=$NUM" | xargs)
       MP=$($PSQL "SELECT melting_point_celsius FROM properties WHERE atomic_number=$NUM" | xargs)
