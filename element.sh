@@ -13,8 +13,10 @@ else
   fi
 
 
-  if [[ $1 =~  ]]
+  if [[ $1 =~ ^[A-Z][a-z]?$ ]]
   then
+    NAME=$($PSQL "SELECT name FROM elements WHERE symbol=$1")
+    echo $NAME
   fi
 
 fi
